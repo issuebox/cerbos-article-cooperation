@@ -1,0 +1,46 @@
+---
+name: DemositeTestSuite
+description: Tests demosite resource
+
+principals:
+  user1:
+    id: id_user1
+    roles: ["owner"]
+  
+  user2:
+    id: id_user2
+    roles: ["admin"]
+
+  user3:
+    id: id_user3
+    roles: ["member"]
+
+
+resources:
+  resource1:
+    id: id_demosite
+    scope: "organization.user"
+    kind: "demosite"
+    attr:
+      role: "owner"
+
+tests:
+  - name: Accessing organization's user
+    input:
+      principals: [ "user1", "user2", "user3"]
+      resources: ["resource1"]
+      actions: ["join_user"]
+    expected:
+
+      - principal: user1
+        resource: resource1
+        actions:
+          create_organization: EFFECT_ALLOW
+      - principal: user2
+        resource: resource1
+        actions:
+          create_organization: EFFECT_ALLOW
+      - principal: user3
+        resource: resource1
+        actions:
+          create_organization: EFFECT_ALLOW
