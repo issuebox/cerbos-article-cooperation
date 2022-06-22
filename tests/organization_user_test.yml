@@ -20,7 +20,7 @@ resources:
   resource1:
     id: id_demosite
     scope: "organization.user"
-    kind: "demosite"
+    kind: "organization"
     attr:
       role: "owner"
 
@@ -31,7 +31,6 @@ tests:
       resources: ["resource1"]
       actions: ["join_user"]
     expected:
-
       - principal: user1
         resource: resource1
         actions:
