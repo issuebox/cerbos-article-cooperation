@@ -1,0 +1,10 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+derivedRoles:
+  name: article_roles
+  definitions:
+    - name: owner
+      parentRoles: ["editor"]
+      condition:
+        match:
+          expr: request.resource.attr.owner == request.principal.id

@@ -1,0 +1,14 @@
+---
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: default
+  scope: "channel"
+  resource: organization
+  rules:
+    - actions:
+        - read
+        - create
+      effect: EFFECT_ALLOW
+      roles:
+        - member
+

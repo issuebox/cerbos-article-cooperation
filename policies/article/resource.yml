@@ -1,0 +1,57 @@
+---
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: default
+  importDerivedRoles:
+    - article_roles
+  resource: article
+
+  rules:
+    - actions:
+        - "*"
+      effect: EFFECT_ALLOW
+      roles:
+        - owner
+        - admin
+
+    - actions:
+        - read
+        - create
+        - move
+        - sort
+      effect: EFFECT_ALLOW
+      roles:
+        - editor
+    
+    - actions:
+      - update
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - owner
+
+
+    - actions:
+      - delete
+      effect: EFFECT_ALLOW
+      derivedRoles:
+        - owner
+      condition:
+        match:
+          expr: request.resource.attr.type != 'category'
+
+    - actions:
+      - read
+      effect: EFFECT_ALLOW
+      roles:
+        - member
+    
+    - actions:
+      - read
+      effect: EFFECT_ALLOW
+      roles:
+        - guest
+      condition:
+        match:
+          expr: request.resource.attr.public == true
+
+
