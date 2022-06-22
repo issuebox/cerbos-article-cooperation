@@ -25,7 +25,7 @@ resources:
       role: "owner"
 
 tests:
-  - name: Accessing organization's user
+  - name: test join_user action
     input:
       principals: [ "user1", "user2", "user3"]
       resources: ["resource1"]
@@ -34,12 +34,12 @@ tests:
       - principal: user1
         resource: resource1
         actions:
-          create_organization: EFFECT_ALLOW
+          join_user: EFFECT_ALLOW
       - principal: user2
         resource: resource1
         actions:
-          create_organization: EFFECT_ALLOW
+          join_user: EFFECT_ALLOW
       - principal: user3
         resource: resource1
         actions:
-          create_organization: EFFECT_ALLOW
+          join_user: EFFECT_ALLOW
