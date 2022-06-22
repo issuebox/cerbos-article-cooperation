@@ -42,4 +42,5 @@ tests:
       - principal: user3
         resource: resource1
         actions:
-          join_user: EFFECT_ALLOW
+          join_user: EFFECT_DENY
+  
