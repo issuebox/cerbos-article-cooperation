@@ -5,7 +5,6 @@ resourcePolicy:
   importDerivedRoles:
     - article_roles
   resource: article
-
   rules:
     - actions:
         - "*"
@@ -13,40 +12,38 @@ resourcePolicy:
       roles:
         - owner
         - admin
-
     - actions:
-        - read
-        - create
-        - move
-        - sort
+        - read:article
+        - create:article
+        - move:article
+        - sort:article
       effect: EFFECT_ALLOW
       roles:
         - editor
     
     - actions:
-      - update
+      - update:article
       effect: EFFECT_ALLOW
       derivedRoles:
         - owner
-
-
     - actions:
-      - delete
+      - delete:article  # can delete his artilce or his empty category
       effect: EFFECT_ALLOW
       derivedRoles:
         - owner
       condition:
         match:
-          expr: request.resource.attr.type != 'category'
-
+          any:
+            of:
+              - expr: request.resource.attr.category == false
+              - expr: request.resource.attr.category == true && request.resource.attr.empty == true
     - actions:
-      - read
+      - read:article
       effect: EFFECT_ALLOW
       roles:
         - member
-    
     - actions:
-      - read
+      - read:article
       effect: EFFECT_ALLOW
       roles:
         - guest

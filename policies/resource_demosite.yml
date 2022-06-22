@@ -1,0 +1,30 @@
+---
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: default
+  resource: demosite
+  rules:
+    - actions:
+        - "*"
+      effect: EFFECT_ALLOW
+      roles:
+        - root
+        - admin
+    - actions:
+        - create:organization
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
+        - member
+    - actions:
+      - delete:user # admin can't delete owner and any one can't delete himself
+      effect: EFFECT_DENY
+      roles:
+        - root
+        - admin
+      condition:
+        match:
+          any:
+            of:
+              - expr: request.resource.attr.role == 'root'
+              - expr: request.resource.attr.uid == request.principal.id

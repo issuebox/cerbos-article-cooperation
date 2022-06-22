@@ -1,11 +1,11 @@
 ---
-name: DemositeTest
-description: Tests demosite resource
+name: OrganizationTest
+description: Tests organization resource
 principals:
   user1:
     id: id_user1
     roles:
-      - root
+      - owner
   user2:
     id: id_user2
     roles:
@@ -16,22 +16,22 @@ principals:
       - member
 resources:
   resource1:
-    id: id_demosite1
-    kind: demosite
+    id: id_resource1
+    kind: organization
     attr:
-      role: root
       uid: id_user1
+      role: owner
+      
   resource2:
-    id: id_demosite2
-    kind: demosite
+    id: id_resource2
+    kind: organization
     attr:
-      role: admin
       uid: id_user2
-    
+      role: admin
 tests:
-  - name: test.demosite
+  - name: organization.test
     input:
-      principals:
+      principals: 
         - user1
         - user2
         - user3
@@ -39,46 +39,65 @@ tests:
         - resource1
         - resource2
       actions:
+        - join:user
         - delete:user
         - create:organization
+        - read:organization
+        - update:organization
         - delete:organization
     expected:
       - principal: user1
         resource: resource1
         actions:
+          join:user: EFFECT_ALLOW
           delete:user: EFFECT_DENY
           create:organization: EFFECT_ALLOW
+          read:organization: EFFECT_ALLOW
+          update:organization: EFFECT_ALLOW
           delete:organization: EFFECT_ALLOW
       - principal: user2
         resource: resource1
         actions:
+          join:user: EFFECT_ALLOW
           delete:user: EFFECT_DENY
           create:organization: EFFECT_ALLOW
+          read:organization: EFFECT_ALLOW
+          update:organization: EFFECT_ALLOW
           delete:organization: EFFECT_ALLOW
       - principal: user3
         resource: resource1
         actions:
+          join:user: EFFECT_DENY
           delete:user: EFFECT_DENY
-          create:organization: EFFECT_ALLOW
+          create:organization: EFFECT_DENY
+          read:organization: EFFECT_ALLOW
+          update:organization: EFFECT_DENY
           delete:organization: EFFECT_DENY
       - principal: user1
         resource: resource2
         actions:
+          join:user: EFFECT_ALLOW
           delete:user: EFFECT_ALLOW
           create:organization: EFFECT_ALLOW
+          read:organization: EFFECT_ALLOW
+          update:organization: EFFECT_ALLOW
           delete:organization: EFFECT_ALLOW
       - principal: user2
         resource: resource2
         actions:
+          join:user: EFFECT_ALLOW
           delete:user: EFFECT_DENY
           create:organization: EFFECT_ALLOW
+          read:organization: EFFECT_ALLOW
+          update:organization: EFFECT_ALLOW
           delete:organization: EFFECT_ALLOW
       - principal: user3
         resource: resource2
         actions:
+          join:user: EFFECT_DENY
           delete:user: EFFECT_DENY
-          create:organization: EFFECT_ALLOW
+          create:organization: EFFECT_DENY
+          read:organization: EFFECT_ALLOW
+          update:organization: EFFECT_DENY
           delete:organization: EFFECT_DENY
-
-
-          
+      

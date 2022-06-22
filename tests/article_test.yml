@@ -1,0 +1,262 @@
+---
+name: ArticleTest
+description: Tests article resource
+principals:
+  user1:
+    id: id_user1
+    roles:
+      - owner
+  user2:
+    id: id_user2
+    roles:
+      - admin
+  user3:
+    id: id_user3
+    roles:
+      - editor
+  user4:
+    id: id_user4
+    roles:
+      - member
+  user5:
+    id: id_user5
+    roles:
+      - guest
+resources:
+  admin_article:
+    id: id_admin_article
+    kind: article
+    attr:
+      uid: id_user1
+      category: false
+      public: true
+  editor_article:
+    id: id_editor_article
+    kind: article
+    attr: 
+      uid: id_user3
+      category: false
+      public: false
+  editor_category:
+    id: id_editor_category
+    kind: article
+    attr:
+      uid: id_user3
+      category: true
+      empty: false
+  editor_empty_category:
+    id: id_editor_empty_category
+    kind: article
+    attr:
+      uid: id_user3
+      category: true
+      empty: true
+      
+
+tests:
+  - name: article.test
+    input:
+      principals: 
+        - user1
+        - user2
+        - user3
+        - user4
+        - user5
+      resources:
+        - admin_article
+        - editor_article
+        - editor_category
+        - editor_empty_category
+      actions:
+        - create:article
+        - read:article
+        - update:article
+        - delete:article
+        - move:article
+        - sort:article
+    expected:
+      - principal: user1
+        resource: admin_article
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user2
+        resource: admin_article
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user3
+        resource: admin_article
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_DENY
+          delete:article: EFFECT_DENY
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user4
+        resource: admin_article
+        actions:
+          create:article: EFFECT_DENY
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_DENY
+          delete:article: EFFECT_DENY
+          move:article: EFFECT_DENY
+          sort:article: EFFECT_DENY
+      - principal: user5
+        resource: admin_article
+        actions:
+          create:article: EFFECT_DENY
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_DENY
+          delete:article: EFFECT_DENY
+          move:article: EFFECT_DENY
+          sort:article: EFFECT_DENY
+      
+      - principal: user1
+        resource: editor_article
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user2
+        resource: editor_article
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user3
+        resource: editor_article
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user4
+        resource: editor_article
+        actions:
+          create:article: EFFECT_DENY
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_DENY
+          delete:article: EFFECT_DENY
+          move:article: EFFECT_DENY
+          sort:article: EFFECT_DENY
+      - principal: user5
+        resource: editor_article
+        actions:
+          create:article: EFFECT_DENY
+          read:article: EFFECT_DENY
+          update:article: EFFECT_DENY
+          delete:article: EFFECT_DENY
+          move:article: EFFECT_DENY
+          sort:article: EFFECT_DENY
+
+
+      - principal: user1
+        resource: editor_category
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user2
+        resource: editor_category
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user3
+        resource: editor_category
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_DENY # can't delete unempty category, avoid there has other owner/admin/editor's data
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user4
+        resource: editor_category
+        actions:
+          create:article: EFFECT_DENY
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_DENY
+          delete:article: EFFECT_DENY
+          move:article: EFFECT_DENY
+          sort:article: EFFECT_DENY
+      - principal: user5
+        resource: editor_category
+        actions:
+          create:article: EFFECT_DENY
+          read:article: EFFECT_DENY
+          update:article: EFFECT_DENY
+          delete:article: EFFECT_DENY
+          move:article: EFFECT_DENY
+          sort:article: EFFECT_DENY
+
+
+      - principal: user1
+        resource: editor_empty_category
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user2
+        resource: editor_empty_category
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user3
+        resource: editor_empty_category
+        actions:
+          create:article: EFFECT_ALLOW
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_ALLOW
+          delete:article: EFFECT_ALLOW  # can delete his own empty category
+          move:article: EFFECT_ALLOW
+          sort:article: EFFECT_ALLOW
+      - principal: user4
+        resource: editor_empty_category
+        actions:
+          create:article: EFFECT_DENY
+          read:article: EFFECT_ALLOW
+          update:article: EFFECT_DENY
+          delete:article: EFFECT_DENY
+          move:article: EFFECT_DENY
+          sort:article: EFFECT_DENY
+      - principal: user5
+        resource: editor_empty_category
+        actions:
+          create:article: EFFECT_DENY
+          read:article: EFFECT_DENY
+          update:article: EFFECT_DENY
+          delete:article: EFFECT_DENY
+          move:article: EFFECT_DENY
+          sort:article: EFFECT_DENY

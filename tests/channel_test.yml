@@ -1,0 +1,139 @@
+---
+name: ChannelTest
+description: Tests channel resource
+principals:
+  user1:
+    id: id_user1
+    roles:
+      - owner
+  user2:
+    id: id_user2
+    roles:
+      - admin
+  user3:
+    id: id_user3
+    roles:
+      - editor
+  user4:
+    id: id_user4
+    roles:
+      - member
+  user5:
+    id: id_user5
+    roles:
+      - guest
+resources:
+  resource1:
+    id: id_resource1
+    kind: channel
+    attr:
+      uid: id_user1
+      role: owner
+  resource2:
+    id: id_resource2
+    kind: channel
+    attr:
+      uid: id_user2
+      role: admin
+
+tests:
+  - name: channel.test
+    input:
+      principals: 
+        - user1
+        - user2
+        - user3
+        - user4
+        - user5
+      resources:
+        - resource1
+        - resource2
+      actions:
+        - delete:user
+        - create:channel
+        - read:channel
+        - update:channel
+        - delete:channel
+    expected:
+      - principal: user1
+        resource: resource1
+        actions:
+          delete:user: EFFECT_DENY
+          create:channel: EFFECT_ALLOW
+          read:channel: EFFECT_ALLOW
+          update:channel: EFFECT_ALLOW
+          delete:channel: EFFECT_ALLOW
+      - principal: user2
+        resource: resource1
+        actions:
+          delete:user: EFFECT_DENY
+          create:channel: EFFECT_ALLOW
+          read:channel: EFFECT_ALLOW
+          update:channel: EFFECT_ALLOW
+          delete:channel: EFFECT_ALLOW
+      - principal: user3
+        resource: resource1
+        actions:
+          delete:user: EFFECT_DENY
+          create:channel: EFFECT_DENY
+          read:channel: EFFECT_DENY
+          update:channel: EFFECT_DENY
+          delete:channel: EFFECT_DENY
+      - principal: user4
+        resource: resource1
+        actions:
+          delete:user: EFFECT_DENY
+          create:channel: EFFECT_DENY
+          read:channel: EFFECT_DENY
+          update:channel: EFFECT_DENY
+          delete:channel: EFFECT_DENY
+      - principal: user5
+        resource: resource1
+        actions:
+          delete:user: EFFECT_DENY
+          create:channel: EFFECT_DENY
+          read:channel: EFFECT_DENY
+          update:channel: EFFECT_DENY
+          delete:channel: EFFECT_DENY
+      - principal: user1
+        resource: resource2
+        actions:
+          delete:user: EFFECT_ALLOW
+          create:channel: EFFECT_ALLOW
+          read:channel: EFFECT_ALLOW
+          update:channel: EFFECT_ALLOW
+          delete:channel: EFFECT_ALLOW
+      - principal: user2
+        resource: resource2
+        actions:
+          delete:user: EFFECT_DENY
+          create:channel: EFFECT_ALLOW
+          read:channel: EFFECT_ALLOW
+          update:channel: EFFECT_ALLOW
+          delete:channel: EFFECT_ALLOW
+      - principal: user3
+        resource: resource2
+        actions:
+          delete:user: EFFECT_DENY
+          create:channel: EFFECT_DENY
+          read:channel: EFFECT_DENY
+          update:channel: EFFECT_DENY
+          delete:channel: EFFECT_DENY
+      - principal: user4
+        resource: resource2
+        actions:
+          delete:user: EFFECT_DENY
+          create:channel: EFFECT_DENY
+          read:channel: EFFECT_DENY
+          update:channel: EFFECT_DENY
+          delete:channel: EFFECT_DENY
+      - principal: user5
+        resource: resource2
+        actions:
+          delete:user: EFFECT_DENY
+          create:channel: EFFECT_DENY
+          read:channel: EFFECT_DENY
+          update:channel: EFFECT_DENY
+          delete:channel: EFFECT_DENY
+  
+      

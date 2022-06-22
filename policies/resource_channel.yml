@@ -1,0 +1,25 @@
+---
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: default
+  resource: channel
+  rules:
+    - actions:
+        - "*"
+      effect: EFFECT_ALLOW
+      roles:
+        - owner
+        - admin
+    - actions:
+        - delete:user
+      effect: EFFECT_DENY
+      roles:
+        - owner
+        - admin
+      condition:
+        match:
+          any:
+            of:
+              - expr: request.resource.attr.role == 'owner'
+              - expr: request.resource.attr.uid == request.principal.id
+
