@@ -1,0 +1,13 @@
+---
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: default
+  scope: organization
+  resource: demosite
+  rules:
+    - actions:
+        - create
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
+        - member

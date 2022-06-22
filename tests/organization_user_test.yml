@@ -1,5 +1,5 @@
 ---
-name: DemositeTestSuite
+name: OrganizationTestSuite
 description: Tests demosite resource
 
 principals:
@@ -19,7 +19,7 @@ principals:
 resources:
   resource1:
     id: id_demosite
-    scope: "organization.user"
+    scope: "user"
     kind: "organization"
     attr:
       role: "owner"

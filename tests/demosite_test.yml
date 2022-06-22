@@ -19,6 +19,7 @@ principals:
 resources:
   resource1:
     id: id_demosite
+    scope: 'organization'
     kind: "demosite"
 
 tests:
@@ -26,18 +27,18 @@ tests:
     input:
       principals: [ "user1", "user2", "user3"]
       resources: ["resource1"]
-      actions: ["create_organization"]
+      actions: ["create"]
     expected:
 
       - principal: user1
         resource: resource1
         actions:
-          create_organization: EFFECT_ALLOW
+          create: EFFECT_ALLOW
       - principal: user2
         resource: resource1
         actions:
-          create_organization: EFFECT_ALLOW
+          create: EFFECT_ALLOW
       - principal: user3
         resource: resource1
         actions:
-          create_organization: EFFECT_ALLOW
+          create: EFFECT_ALLOW
